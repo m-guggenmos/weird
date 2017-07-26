@@ -9,7 +9,7 @@ Matthias Guggenmos, Katharina Schmack and Philipp Sterzer, "WeiRD - a fast and p
 multivariate pattern classifier," 2016 International Workshop on Pattern Recognition in
 Neuroimaging (PRNI), Trento, Italy, 2016, pp. 1-4. doi: 10.1109/PRNI.2016.7552349
 
-**Simple example:**
+**Simple example for Python:**
 
 ```python
 import numpy as np
