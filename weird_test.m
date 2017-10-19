@@ -13,4 +13,5 @@ train_ind = repmat([true(n_samples/4, 1); false(n_samples/4, 1)], 2, 1);
 test_ind = ~train_ind;
 
 model = weirdtrain(y(train_ind), X(train_ind, :));
-predictions = weirdpredict(y(test_ind), X(test_ind, :), model);
+predictions = weirdpredict(y(test_ind), X(test_ind, :), model, 'euclidean');
+fprintf('Accuracy: %.2f%%\n', 100*mean(predictions == y(test_ind)))

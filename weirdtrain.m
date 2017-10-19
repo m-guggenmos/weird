@@ -29,9 +29,9 @@
 %
 % by Matthias Guggenmos 19/09/16
 % _________________________________________________________________________
-% M. Guggenmos, K. Schmack and P. Sterzer, "WeiRD - a fast and performant 
-% multivoxel pattern classifier," 2016 International Workshop on Pattern 
-% Recognition in Neuroimaging (PRNI), Trento, Italy, 2016, pp. 1-4.
+% Matthias Guggenmos, Katharina Schmack and Philipp Sterzer, "WeiRD - a fast
+% and performant multivariate pattern classifier", 2016, International Workshop
+% on Pattern Recognition in Neuroimaging (PRNI), Trento, Italy, 2016, pp. 1-4.
 % doi: 10.1109/PRNI.2016.7552349
 
 function model = weirdtrain(y, X, exponential_scaling)
@@ -41,7 +41,7 @@ function model = weirdtrain(y, X, exponential_scaling)
     end
 
     model = struct();
-    model.classes = uniqueq(y);
+    model.classes = unique(y);
     x1 = X(y==model.classes(1), :);
     x2 = X(y==model.classes(2), :);
     n1 = size(x1, 1);

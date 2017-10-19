@@ -7,6 +7,7 @@
 %   y: label vector (n_samples x 1)
 %   X: testing data (n_samples x n_features)
 %   model: struct as returned by weirdtrain
+%   distance_type: 'manhattan' or 'euclidean' (default: euclidean)
 %   verbose: if true, prints accuracy (default: true)
 %
 % OUTPUT:
@@ -29,24 +30,28 @@
 % doi: 10.1109/PRNI.2016.7552349
 
 
-function predictions = weirdpredict(y, X, model, robust, verbose)
+function predictions = weirdpredict(y, X, model, distance_type, verbose)
 
-    if nargin <= 3 || isempty(robust)
-        robust = false;
+    if nargin <= 3 || isempty(distance_type)
+        distance_type = 'euclidean';
     end
 
     if nargin <= 4 || isempty(verbose)
-        verbose = true;
+        verbose = false;
     end
 
-    % compute votes of each feature based on distance to centroid
-    votes = abs(X - repmat(model.x1, size(X, 1), 1)) - ...
-            abs(X - repmat(model.x2, size(X, 1), 1));
-
-    % compute decision values as a weighted sum of votes and feature
-    % importances
-    fi_matrix = repmat(model.feature_importances_, size(votes, 1), 1);
-    dec = dot(votes, fi_matrix, 2) / size(votes, 2);
+    if strcmp(distance_type, 'manhattan')
+        % compute votes of each feature based on distance to centroid
+        votes = abs(X - repmat(model.x1, size(X, 1), 1)) - ...
+                abs(X - repmat(model.x2, size(X, 1), 1));
+        % compute decision values as a weighted sum of votes and feature
+        % importances
+        fi_matrix = repmat(model.feature_importances_, size(votes, 1), 1);
+        dec = dot(votes, fi_matrix, 2) / size(votes, 2);
+    elseif strcmp(distance_type, 'euclidean')
+        dec = sum((model.feature_importances_ .* (X - model.x1)) .^ 2, 2) -...
+              sum((model.feature_importances_ .* (X - model.x2)) .^ 2, 2);        
+    end
     
     % compute predictions based on the sign of the decision value
     predictions = arrayfun(@(x)model.classes(x+1), dec > 0);
